@@ -1,0 +1,10 @@
+apiVersion: frpc.yoogo.top/v1
+kind: Client
+metadata:
+  name: client-sample
+spec:
+  common:
+    server_addr: 127.0.0.1
+    server_port: 7000
+    token:
+      value: passwd

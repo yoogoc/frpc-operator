@@ -1,0 +1,22 @@
+{{- /*gotype: github.com/YoogoC/frpc-operator/gen.FrpcConfig*/ -}}
+[common]
+server_addr = {{ .Common.ServerAddress }}
+server_port = {{ .Common.ServerPort }}
+
+{{ if not (eq .Common.Token "") }}
+token = {{ .Common.Token }}
+{{ end }}
+
+admin_addr = {{ .Common.AdminAddress }}
+admin_port = {{ .Common.AdminPort }}
+admin_user = {{ .Common.AdminUsername }}
+admin_pwd = {{ .Common.AdminPassword }}
+
+{{ range $tp := .TCPProxies }}
+[{{ $tp.Name }}]
+type = tcp
+local_ip = {{ $tp.LocalAddr }}
+local_port = {{ $tp.LocalPort }}
+remote_port = {{ $tp.RemotePort }}
+use_encryption = true
+{{ end }}

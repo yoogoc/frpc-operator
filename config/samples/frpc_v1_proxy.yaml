@@ -1,0 +1,10 @@
+apiVersion: frpc.yoogo.top/v1
+kind: Proxy
+metadata:
+  name: proxy-sample
+spec:
+  client: client-sample
+  local_addr: 127.0.0.1
+  local_port: "80"
+  tcp:
+    remote_port: "20080"

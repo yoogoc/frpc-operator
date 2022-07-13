@@ -1,0 +1,25 @@
+domain: yoogo.top
+layout:
+- go.kubebuilder.io/v3
+projectName: frpc-operator
+repo: github.com/YoogoC/frpc-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: yoogo.top
+  group: frpc
+  kind: Proxy
+  path: github.com/YoogoC/frpc-operator/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: yoogo.top
+  group: frpc
+  kind: Client
+  path: github.com/YoogoC/frpc-operator/api/v1
+  version: v1
+version: "3"
