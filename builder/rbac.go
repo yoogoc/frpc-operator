@@ -55,7 +55,7 @@ func (builder *RbacBuilder) BuildRoleBinding() *rbacv1.RoleBinding {
 		},
 		RoleRef: rbacv1.RoleRef{
 			APIGroup: "rbac.authorization.k8s.io",
-			Kind:     "ClusterRole",
+			Kind:     "Role",
 			Name:     builder.roleName,
 		},
 		Subjects: []rbacv1.Subject{
