@@ -9,36 +9,23 @@ You’ll need a Kubernetes cluster to run against. You can use [KIND](https://si
 **Note:** Your controller will automatically use the current context in your kubeconfig file (i.e. whatever cluster `kubectl cluster-info` shows).
 
 ### Running on the cluster
-1. Install Instances of Custom Resources:
+1. Install Operator:
+
+```sh
+helm upgrade -i <release-name> ./charts -n your-namesapce --create-namesapce
+```
+
+2. Install Instances of Custom Resources:
 
 ```sh
 kubectl apply -f config/samples/
 ```
 
-2. Build and push your image to the location specified by `IMG`:
-	
-```sh
-make docker-build docker-push IMG=<some-registry>/frpc-operator:tag
-```
-	
-3. Deploy the controller to the cluster with the image specified by `IMG`:
-
-```sh
-make deploy IMG=<some-registry>/frpc-operator:tag
-```
-
-### Uninstall CRDs
+### Uninstall CRDs and controller
 To delete the CRDs from the cluster:
 
 ```sh
-make uninstall
-```
-
-### Undeploy controller
-UnDeploy the controller to the cluster:
-
-```sh
-make undeploy
+helm uninstall <release-name> -n your-namesapce
 ```
 
 ## Contributing
@@ -91,4 +78,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-

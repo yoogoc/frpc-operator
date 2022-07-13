@@ -46,6 +46,9 @@ const myFinalizerName = "frpc.yoogo.top/finalizer"
 // +kubebuilder:rbac:groups=frpc.yoogo.top,resources=clients/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=frpc.yoogo.top,resources=clients/finalizers,verbs=update
 
+// +kubebuilder:rbac:groups="apps",resources=deployments,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups="",resources=configmaps,verbs=get;list;watch;create;update;patch;delete
+
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 // TODO(user): Modify the Reconcile function to compare the state specified by
@@ -89,6 +92,13 @@ func (r *ClientReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 	}
 	// 2. 如果不是删除,根据client和proxy的定义生成frpc.ini
 	if err := createOrUpdateConfigMap(ctx, r.Client, frpClient); err != nil {
+		return ctrl.Result{}, err
+	}
+
+	serviceAccountName := "frpc-config-reload"
+	roleName := "frpc-config-reload"
+	roleBindingName := "frpc-config-reload-binding"
+	if err := tryCreateRbac(ctx, r.Client, req.Namespace, serviceAccountName, roleName, roleBindingName); err != nil {
 		return ctrl.Result{}, err
 	}
 
@@ -145,5 +155,6 @@ func (r *ClientReconciler) deleteExternalResources(ctx context.Context, nn types
 	if err != nil {
 		return err
 	}
+	// 获取当前命名空间下所有client,如果全部删除了,则删除rbac
 	return nil
 }

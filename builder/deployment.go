@@ -67,25 +67,18 @@ func (n *DeployBuilder) Build() *appsv1.Deployment {
 					},
 				},
 				Spec: corev1.PodSpec{
-					ServiceAccountName: "frpc",
-					// TODO need InitContainers ?
-					// InitContainers: []corev1.Container{
-					// 	{
-					// 		Name:    "init-config",
-					// 		Image:   "busybox:latest",
-					// 		Command: []string{"touch", "/frp/config.ini"},
-					// 		VolumeMounts: []corev1.VolumeMount{
-					// 			{
-					// 				Name:      "config",
-					// 				MountPath: "/frp",
-					// 			},
-					// 		},
-					// 	},
-					// },
+					ServiceAccountName: "frpc-config-reload",
 					Containers: []corev1.Container{
 						{
 							Name:  "config-reload",
-							Image: "kiwigrid/k8s-sidecar:1.15.0",
+							Image: "kiwigrid/k8s-sidecar:1.15.0", // TODO
+							// Lifecycle: &corev1.Lifecycle{
+							// 	PostStart: &corev1.LifecycleHandler{
+							// 		Exec: &corev1.ExecAction{
+							// 			Command: []string{"cat", "/frp/frpc.ini"},
+							// 		},
+							// 	},
+							// },
 							SecurityContext: &corev1.SecurityContext{
 								RunAsUser:                &runAsUser,
 								RunAsGroup:               &runAsGroup,
@@ -121,11 +114,11 @@ func (n *DeployBuilder) Build() *appsv1.Deployment {
 								},
 								{
 									Name:  "REQ_USERNAME",
-									Value: "frpc-admin",
+									Value: "frpc-admin", // TODO
 								},
 								{
 									Name:  "REQ_PASSWORD",
-									Value: "frpc-password",
+									Value: "frpc-password", // TODO
 								},
 								{
 									Name:  "REQ_RETRY_CONNECT",

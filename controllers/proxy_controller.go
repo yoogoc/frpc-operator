@@ -97,7 +97,7 @@ func (r *ProxyReconciler) SetupWithManager(mgr ctrl.Manager) error {
 func (r *ProxyReconciler) reloadConfigMap(ctx context.Context, proxy *frpcv1.Proxy, nn types.NamespacedName) error {
 	frpClient := new(frpcv1.Client)
 	if err := r.Get(ctx, client.ObjectKey{Name: proxy.Spec.Client, Namespace: nn.Namespace}, frpClient); err != nil {
-		return err
+		return client.IgnoreNotFound(err)
 	}
 	if frpClient.DeletionTimestamp != nil {
 		return nil
